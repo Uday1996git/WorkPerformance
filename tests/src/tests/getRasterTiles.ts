@@ -29,11 +29,21 @@ const headers = {
   contentType: 'image/jpeg'
 }
 
-export const options: Options = tilesPack
-
-if (!options.scenarios?.[SCENARIO_TAG]) {
+if (!tilesPack.scenarios?.[SCENARIO_TAG]) {
   throw new Error(`Scenario ${SCENARIO_TAG} not found.`);
 }
+
+// TODO: for now go with single scenarios
+// Ideally create an util to provide merge option.
+export const options: Options = {
+  ...tilesPack,
+  scenarios: {
+    [SCENARIO_TAG]: tilesPack.scenarios?.[SCENARIO_TAG]
+  }
+}
+
+console.log('***Final Options***', options);
+
 
 type URIObject = { URI: string }
 

@@ -8,6 +8,12 @@ export const tilesPack: Options = {
     http_req_failed: ['rate<0.03'], // http errors should be less than 3%
   },
   scenarios: {
+    smokeGetTiles: {
+      executor: 'per-vu-iterations',
+      vus: 1,
+      iterations: 20,
+      maxDuration: '10s',
+    },
     spikeGetTiles: {
       executor: 'ramping-arrival-rate',
       preAllocatedVUs: 10,
@@ -15,11 +21,11 @@ export const tilesPack: Options = {
       timeUnit: '1m',
       startRate: 600,
       stages: [
-        { target: 1200, duration: '2m' }, // linearly go from 50 iters/s to 200 iters/s for 30s
-        { target: 2400, duration: '3m' }, // instantly jump to 500 iters/s
-        { target: 2400, duration: '20m' }, // continue with 500 iters/s for 10 minutes
-        { target: 1200, duration: '2m' },
-        { target: 600, duration: '1m' },
+        { target: 1200, duration: '2m' }, // linearly go from 600 iters/s to 1200 iters/s for 2m
+        { target: 2400, duration: '3m' }, // jump to 2400 iters/s in 3m
+        { target: 2400, duration: '20m' },// continue with 2400 iters/s for 20 minutes
+        { target: 1200, duration: '2m' },// ramp down to 1200 iters/s in 2m
+        { target: 600, duration: '1m' },// ramp down to 600 iters/s in 1m
       ]
     },
   },

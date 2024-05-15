@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "build-webpack":"webpack --config webpack.config.js",
-    "run-tests":"./mac/k6 run",
+    "run-tests":"./k6 run",
     "run-testsd":"K6_WEB_DASHBOARD=true ./k6 run"
   },
   "dependencies": {
