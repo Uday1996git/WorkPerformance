@@ -1,0 +1,47 @@
+{
+  "name": "tests",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "tests/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "tscbuild": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "load-tests/tests/dist",
+        "main": "load-tests/tests/src/index.ts",
+        "tsConfig": "load-tests/tests/tsconfig.lib.json",
+        "assets": ["load-tests/tests/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "load-tests/tests/**/*.ts",
+          "load-tests/tests/package.json"
+        ]
+      }
+    },
+    "build": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "build-webpack"
+      }
+    },
+    "test": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "run-tests"
+      }
+    },
+    "testd": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "run-testsd"
+      }
+    }
+  }
+}

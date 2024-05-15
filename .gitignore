@@ -39,3 +39,10 @@ testem.log
 Thumbs.db
 
 .nx/cache
+
+/dist/
+
+tests/mac/*
+
+**/html-report.html
+

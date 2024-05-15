@@ -1,0 +1,19 @@
+{
+  "name": "core-framework",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "core-framework/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/core-framework",
+        "main": "core-framework/src/index.ts",
+        "tsConfig": "core-framework/tsconfig.lib.json",
+        "assets": ["core-framework/*.md"]
+      }
+    }
+  }
+}

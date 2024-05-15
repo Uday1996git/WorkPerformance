@@ -1,0 +1,16 @@
+{
+  "name": "tests",
+  "version": "0.0.1",
+  "scripts": {
+    "build-webpack":"webpack --config webpack.config.js",
+    "run-tests":"./mac/k6 run",
+    "run-testsd":"K6_WEB_DASHBOARD=true ./mac/k6 run"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "type": "commonjs",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
+  "private": true
+}
