@@ -15,6 +15,8 @@ Generates javascript files in dist folder. k6 works with only Javascript
 ## Run tests
 k6 is not nodejs based, to run tests rely on k6 binary
 
+Download [k6 binary](https://github.com/grafana/k6/releases) and copy to root folder(For example tests/)
+
 > Always replace with the latest binary, and ensure the binary is compatible with the operating system on which you are running the scripts.
 
 > After running build, files will be generated under dist folder. For each test file one js will be generated

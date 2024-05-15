@@ -42,7 +42,7 @@ Thumbs.db
 
 /dist/
 
-tests/mac/*
+**/k6
 
 **/html-report.html
 
