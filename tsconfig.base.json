@@ -17,7 +17,7 @@
     "paths": {
       "core-framework": ["core-framework/src/index.ts"],
       "services": ["services/src/index.ts"],
-      "tests": ["tests/src/index.ts"]
+      "raster-server": ["raster-server/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

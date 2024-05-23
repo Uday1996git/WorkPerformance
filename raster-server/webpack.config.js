@@ -6,7 +6,7 @@ const excludeFiles = `!(*test-config|test-data)`;
 
 module.exports = {
   mode: 'production',
-  entry: GlobEntries(`./src/tests/**/${excludeFiles}.ts`),
+  entry: GlobEntries(`./src/raster-server/**/${excludeFiles}.ts`),
   output: {
     path: path.join(__dirname, 'dist'),
     libraryTarget: 'commonjs',

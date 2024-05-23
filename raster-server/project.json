@@ -1,7 +1,7 @@
 {
-  "name": "tests",
+  "name": "raster-server",
   "$schema": "../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "tests/src",
+  "sourceRoot": "raster-server/src",
   "projectType": "library",
   "tags": [],
   "targets": {
@@ -9,10 +9,10 @@
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "load-tests/tests/dist",
-        "main": "load-tests/tests/src/index.ts",
-        "tsConfig": "load-tests/tests/tsconfig.lib.json",
-        "assets": ["load-tests/tests/*.md"]
+        "outputPath": "load-tests/raster-server/dist",
+        "main": "load-tests/raster-server/src/index.ts",
+        "tsConfig": "load-tests/raster-server/tsconfig.lib.json",
+        "assets": ["load-tests/raster-server/*.md"]
       }
     },
     "lint": {
@@ -20,8 +20,8 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
-          "load-tests/tests/**/*.ts",
-          "load-tests/tests/package.json"
+          "load-tests/raster-server/**/*.ts",
+          "load-tests/raster-server/package.json"
         ]
       }
     },

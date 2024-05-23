@@ -1,5 +1,5 @@
 {
-  "name": "tests",
+  "name": "raster-server",
   "version": "0.0.1",
   "scripts": {
     "build-webpack":"webpack --config webpack.config.js",
