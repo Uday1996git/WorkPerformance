@@ -6,9 +6,9 @@ import { scenario } from 'k6/execution';
 // @ts-ignore
 import papaparse from '../libs/papaparse.min.js';
 
-import { TilePack } from '../services';
-import { tilesPack } from '../scenarios';
-import { generateRandomNumber } from '../libs/utils';
+import { TilePack } from '../services/index.js';
+import { tilesPack } from '../scenarios/index.js';
+import { generateRandomNumber } from '../libs/utils.js';
 
 
 const HOSTNAME = __ENV['HOSTNAME'],
@@ -16,7 +16,8 @@ const HOSTNAME = __ENV['HOSTNAME'],
   X_AUTH_TOKEN = __ENV['X_AUTH_TOKEN'],
   X_APP_TOKEN = __ENV['X_APP_TOKEN'],
   X_APP_VERSION = __ENV['X_APP_VERSION'],
-  SCENARIO_TAG = __ENV['SCENARIO_TAG'];
+  SCENARIO_TAG = __ENV['SCENARIO_TAG'],
+  TEST_DATA_PATH = __ENV['TEST_DATA_PATH'];
 
 interface Scenario {
   [key: string]: Options;
@@ -49,7 +50,7 @@ type URIObject = { URI: string }
 
 const rasterRequestUrls: URIObject[] = new SharedArray('another data name', function () {
   // Load CSV file and parse it using Papa Parse
-  return papaparse.parse(open('./raster-tile-request-test-data.csv'), { header: true }).data;
+  return papaparse.parse(open(TEST_DATA_PATH), { header: true }).data;
 });
 
 console.log('*************************************************************\n*** Test Data Loading Finished. Execution Starts Now ********\n*************************************************************');
