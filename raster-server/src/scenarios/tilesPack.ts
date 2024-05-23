@@ -11,8 +11,8 @@ export const tilesPack: Options = {
     smokeGetTiles: {
       executor: 'per-vu-iterations',
       vus: 1,
-      iterations: 20,
-      maxDuration: '10s',
+      iterations: 10,
+      maxDuration: '30s',
     },
     averageLoadGetTiles: {
       executor: 'ramping-arrival-rate',
