@@ -4,10 +4,10 @@ import { SharedArray } from 'k6/data';
 // @ts-ignore
 import { scenario } from 'k6/execution';
 // @ts-ignore
-import papaparse from '../libs/papaparse.min.js';
+import papaparse from '../../../libs/papaparse.min.js';
 
-import { TilePack } from '../services/index.js';
-import { tilesPack } from '../scenarios/index.js';
+import { TilePack } from '../services';
+import { tilesPack } from '../scenarios';
 import { generateRandomNumber } from 'shared';
 
 
