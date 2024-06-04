@@ -16,8 +16,9 @@
     "baseUrl": ".",
     "paths": {
       "core-framework": ["core-framework/src/index.ts"],
+      "raster-server": ["raster-server/src/index.ts"],
       "services": ["services/src/index.ts"],
-      "raster-server": ["raster-server/src/index.ts"]
+      "shared": ["shared/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

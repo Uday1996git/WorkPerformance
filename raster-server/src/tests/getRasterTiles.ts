@@ -8,7 +8,7 @@ import papaparse from '../libs/papaparse.min.js';
 
 import { TilePack } from '../services/index.js';
 import { tilesPack } from '../scenarios/index.js';
-import { generateRandomNumber } from '../libs/utils.js';
+import { generateRandomNumber } from 'shared';
 
 
 const HOSTNAME = __ENV['HOSTNAME'],
