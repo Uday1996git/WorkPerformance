@@ -8,7 +8,7 @@ import papaparse from '../../../libs/papaparse.min.js';
 
 import { TilePack } from '../services';
 import { tilesPack } from '../scenarios';
-import { generateRandomNumber } from 'shared';
+import { generateRandomNumber, errorHandler } from 'shared';
 
 
 const HOSTNAME = __ENV['HOSTNAME'],
@@ -75,16 +75,12 @@ export default () => {
   const res = TilePack.getTiles(`${PROTOCOL}://${HOSTNAME}${rasterPath.URI}`, headers);
 
 
-  if (res.status === 200 || res.status === 404) {
-    console.log(`Status ${res.status} for the path ${rasterPath.URI}`);
-  } else {
-    console.log(`!X!X!X Error status ${res.status}  for the request path ${rasterPath.URI}`, res);
-  }
-
-
   // As we are using production data, some urls will not be found on dev env
   // As our intention is to simulate load, we are ignoring 404 requests.
-  check(res, {
+  const checkStatus = check(res, {
     'status is 200': () => res.status === 200 || res.status === 404,
   });
+
+  // Log the failed checks
+  errorHandler.logError(!checkStatus, res);
 };
