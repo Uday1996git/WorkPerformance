@@ -1,4 +1,5 @@
 import http from 'k6/http';
+import { APIClient } from 'shared';
 
 
 
@@ -15,7 +16,8 @@ export class TilePack {
         const params = {
             headers: { 'X-Auth-Token': xAuthToken, 'X-App-Token': xAppToken, 'X-App-Version': xAppVersion, 'Content-Type': contentType }
         }
-        return http.get(url, params);
+        // return http.get(url, params);
+        return new APIClient({ baseUrl: url, options: params }).get();
     }
 
 }

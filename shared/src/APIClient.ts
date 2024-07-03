@@ -1,31 +1,48 @@
-import http from 'k6/http';
+import http, { RequestBody } from 'k6/http';
 
 type APIRequest = {
     baseUrl: string;
-    resource: string;
+    resource?: string;
     queryString?: string;
-    data?: object;
+    body?: RequestBody;
     options: object;
 };
 
 export class APIClient {
-    post(request: APIRequest) {
-        return http.post(`${request.baseUrl}/${request.resource}`, JSON.stringify(request.data || {}), request.options);
+    private url: string;
+    private body: RequestBody;
+    private options: object;
+
+    constructor(request: APIRequest) {
+        this.url = this.constructUrl(request);
+        this.body = JSON.stringify(request.body || {});
+        this.options = request.options || {};
     }
 
-    get(request: APIRequest) {
-        const url = request.queryString ? `${request.baseUrl}/${request.resource}?${request.queryString}` : `${request.baseUrl}/${request.resource}`;
-        return http.get(url, request.options);
-
+    post() {
+        return http.post(this.url, this.body, this.options);
     }
 
-    put(request: APIRequest) {
-        const url = request.queryString ? `${request.baseUrl}/${request.resource}?${request.queryString}` : `${request.baseUrl}/${request.resource}`;
-        return http.put(url, JSON.stringify(request.data || {}), request.options);
+    get() {
+        return http.get(this.url, this.options);
     }
 
-    delete(request: APIRequest) {
-        const url = request.queryString ? `${request.baseUrl}/${request.resource}?${request.queryString}` : `${request.baseUrl}/${request.resource}`;
-        return http.del(url, {}, request.options);
+    put() {
+        return http.put(this.url, this.body, this.options);
+    }
+
+    delete() {
+        return http.del(this.url, this.body, this.options);
+    }
+
+    private constructUrl(request: APIRequest) {
+        let fullUrl = request.baseUrl;
+        if (request?.resource) {
+            fullUrl += request.resource;
+        }
+        if (request?.queryString) {
+            fullUrl += request.queryString;
+        }
+        return fullUrl;
     }
 }
