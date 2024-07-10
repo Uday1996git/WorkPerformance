@@ -6,22 +6,12 @@ import papaparse from '../../../libs/papaparse.min.js';
 
 import { TilePack } from '../services';
 import { tilesPack } from '../scenarios';
-import { generateRandomNumber, errorHandler } from 'shared';
+import { generateRandomNumber, errorHandler, getHeaders } from 'shared';
 
 
 const BASE_URL = __ENV['BASE_URL'],
-  X_AUTH_TOKEN = __ENV['X_AUTH_TOKEN'],
-  X_APP_TOKEN = __ENV['X_APP_TOKEN'],
-  X_APP_VERSION = __ENV['X_APP_VERSION'],
   SCENARIO_TAG = __ENV['SCENARIO_TAG'],
   TEST_DATA_PATH = __ENV['TEST_DATA_PATH'];
-
-const headers = {
-  xAuthToken: X_AUTH_TOKEN,
-  xAppToken: X_APP_TOKEN,
-  xAppVersion: X_APP_VERSION,
-  contentType: 'image/jpeg'
-}
 
 if (!tilesPack.scenarios?.[SCENARIO_TAG]) {
   throw new Error(`Scenario ${SCENARIO_TAG} not found.`);
@@ -58,7 +48,7 @@ export default () => {
   console.log('randomIndex', randomIndex);
   const rasterPath = rasterRequestUrls[randomIndex];
 
-  const res = TilePack.getTiles(`${BASE_URL}${rasterPath.URI}`, headers);
+  const res = TilePack.getTiles(`${BASE_URL}${rasterPath.URI}`, getHeaders());
 
 
   // As we are using production data, some urls will not be found on dev env

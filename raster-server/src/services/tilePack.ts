@@ -1,20 +1,10 @@
-import http from 'k6/http';
 import { APIClient } from 'shared';
 
 
-
-export type Headers = {
-    xAuthToken: string,
-    xAppToken: string,
-    xAppVersion: string,
-    contentType: string
-}
-
 export class TilePack {
-    static getTiles(url: string, headers: Headers) {
-        const { xAuthToken, xAppToken, xAppVersion, contentType } = headers
+    static getTiles(url: string, headers: object) {
         const params = {
-            headers: { 'X-Auth-Token': xAuthToken, 'X-App-Token': xAppToken, 'X-App-Version': xAppVersion, 'Content-Type': contentType }
+            headers
         }
         // return http.get(url, params);
         return new APIClient({ baseUrl: url, options: params }).get();
