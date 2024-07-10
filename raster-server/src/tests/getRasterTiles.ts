@@ -2,33 +2,16 @@ import { check } from 'k6';
 import { Options } from 'k6/options';
 import { SharedArray } from 'k6/data';
 // @ts-ignore
-import { scenario } from 'k6/execution';
-// @ts-ignore
-import papaparse from '../libs/papaparse.min.js';
+import papaparse from '../../../libs/papaparse.min.js';
 
-import { TilePack } from '../services/index.js';
-import { tilesPack } from '../scenarios/index.js';
-import { generateRandomNumber } from '../libs/utils.js';
+import { TilePack } from '../services';
+import { tilesPack } from '../scenarios';
+import { generateRandomNumber, errorHandler, getHeaders } from 'shared';
 
 
-const HOSTNAME = __ENV['HOSTNAME'],
-  PROTOCOL = __ENV['PROTOCOL'],
-  X_AUTH_TOKEN = __ENV['X_AUTH_TOKEN'],
-  X_APP_TOKEN = __ENV['X_APP_TOKEN'],
-  X_APP_VERSION = __ENV['X_APP_VERSION'],
+const BASE_URL = __ENV['BASE_URL'],
   SCENARIO_TAG = __ENV['SCENARIO_TAG'],
   TEST_DATA_PATH = __ENV['TEST_DATA_PATH'];
-
-interface Scenario {
-  [key: string]: Options;
-}
-
-const headers = {
-  xAuthToken: X_AUTH_TOKEN,
-  xAppToken: X_APP_TOKEN,
-  xAppVersion: X_APP_VERSION,
-  contentType: 'image/jpeg'
-}
 
 if (!tilesPack.scenarios?.[SCENARIO_TAG]) {
   throw new Error(`Scenario ${SCENARIO_TAG} not found.`);
@@ -60,31 +43,20 @@ console.log('rasterRequestsLength', rasterRequestsLength);
 
 export default () => {
 
-
-
-  console.log('Iteration Index', scenario.iterationInTest);
-
-  // scenario.iterationInTest : gives index of iteration, if iteration goes beyond test data array length, exceptions will occur
-  // const rasterPath = rasterRequestUrls[scenario.iterationInTest];
-
   // Get random number between the 0 and test data length
   const randomIndex = generateRandomNumber(0, rasterRequestsLength);
   console.log('randomIndex', randomIndex);
   const rasterPath = rasterRequestUrls[randomIndex];
 
-  const res = TilePack.getTiles(`${PROTOCOL}://${HOSTNAME}${rasterPath.URI}`, headers);
-
-
-  if (res.status === 200 || res.status === 404) {
-    console.log(`Status ${res.status} for the path ${rasterPath.URI}`);
-  } else {
-    console.log(`!X!X!X Error status ${res.status}  for the request path ${rasterPath.URI}`, res);
-  }
+  const res = TilePack.getTiles(`${BASE_URL}${rasterPath.URI}`, getHeaders());
 
 
   // As we are using production data, some urls will not be found on dev env
   // As our intention is to simulate load, we are ignoring 404 requests.
-  check(res, {
+  const checkStatus = check(res, {
     'status is 200': () => res.status === 200 || res.status === 404,
   });
+
+  // Log the failed checks
+  errorHandler.logError(!checkStatus, res);
 };

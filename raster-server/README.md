@@ -31,7 +31,7 @@ Download [k6 Typescript binary](https://github.com/grafana/xk6-ts/releases/tag/v
 
 To run tests
 ```
-K6_WEB_DASHBOARD=true K6_WEB_DASHBOARD_PERIOD=1s K6_WEB_DASHBOARD_EXPORT=html-report.html npx nx test raster-server -e PROTOCOL=https -e HOSTNAME=neutron-raster-server-dev.geo.apple.com -e SCENARIO_TAG=smokeGetTiles -e X_AUTH_TOKEN=${token} -e X_APP_TOKEN=${apptoken} -e X_APP_VERSION=1 -e TEST_DATA_PATH=${testDataPath} src/tests/getRasterTiles.ts |& tee k6logs.log
+K6_WEB_DASHBOARD=true K6_WEB_DASHBOARD_PERIOD=1s K6_WEB_DASHBOARD_EXPORT=html-report.html npx nx test raster-server -e BASE_URL=https://neutron-raster-server-dev.geo.apple.com -e SCENARIO_TAG=smokeGetTiles -e X_AUTH_TOKEN=${token} -e X_APP_TOKEN=${apptoken} -e X_APP_VERSION=1 -e TEST_DATA_PATH=${testDataPath} src/tests/getRasterTiles.ts |& tee k6logs.log
 ```
 
 
