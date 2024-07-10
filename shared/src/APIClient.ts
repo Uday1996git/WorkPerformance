@@ -1,12 +1,5 @@
 import http, { RequestBody } from 'k6/http';
-
-type APIRequest = {
-    baseUrl: string;
-    resource?: string;
-    queryString?: string;
-    body?: RequestBody;
-    options: object;
-};
+import { APIRequest } from './types';
 
 export class APIClient {
     private url: string;

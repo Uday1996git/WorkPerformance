@@ -2,8 +2,6 @@ import { check } from 'k6';
 import { Options } from 'k6/options';
 import { SharedArray } from 'k6/data';
 // @ts-ignore
-import { scenario } from 'k6/execution';
-// @ts-ignore
 import papaparse from '../../../libs/papaparse.min.js';
 
 import { TilePack } from '../services';
@@ -11,17 +9,12 @@ import { tilesPack } from '../scenarios';
 import { generateRandomNumber, errorHandler } from 'shared';
 
 
-const HOSTNAME = __ENV['HOSTNAME'],
-  PROTOCOL = __ENV['PROTOCOL'],
+const BASE_URL = __ENV['BASE_URL'],
   X_AUTH_TOKEN = __ENV['X_AUTH_TOKEN'],
   X_APP_TOKEN = __ENV['X_APP_TOKEN'],
   X_APP_VERSION = __ENV['X_APP_VERSION'],
   SCENARIO_TAG = __ENV['SCENARIO_TAG'],
   TEST_DATA_PATH = __ENV['TEST_DATA_PATH'];
-
-interface Scenario {
-  [key: string]: Options;
-}
 
 const headers = {
   xAuthToken: X_AUTH_TOKEN,
@@ -60,19 +53,12 @@ console.log('rasterRequestsLength', rasterRequestsLength);
 
 export default () => {
 
-
-
-  console.log('Iteration Index', scenario.iterationInTest);
-
-  // scenario.iterationInTest : gives index of iteration, if iteration goes beyond test data array length, exceptions will occur
-  // const rasterPath = rasterRequestUrls[scenario.iterationInTest];
-
   // Get random number between the 0 and test data length
   const randomIndex = generateRandomNumber(0, rasterRequestsLength);
   console.log('randomIndex', randomIndex);
   const rasterPath = rasterRequestUrls[randomIndex];
 
-  const res = TilePack.getTiles(`${PROTOCOL}://${HOSTNAME}${rasterPath.URI}`, headers);
+  const res = TilePack.getTiles(`${BASE_URL}${rasterPath.URI}`, headers);
 
 
   // As we are using production data, some urls will not be found on dev env
