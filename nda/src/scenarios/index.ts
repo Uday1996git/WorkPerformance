@@ -1,2 +1,2 @@
 
-export * from './tilesPack';
+export * from './nda';
