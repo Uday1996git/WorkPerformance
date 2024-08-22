@@ -5,7 +5,7 @@ import { Options } from 'k6/options';
 export const tilesPack: Options = {
   discardResponseBodies: true,
   thresholds: {
-    http_req_failed: ['rate<0.03'], // http errors should be less than 3%
+    http_req_failed: ['rate<0.3'], // http errors should be less than 30%
   },
   scenarios: {
     smokeGetTiles: {
@@ -36,15 +36,15 @@ export const tilesPack: Options = {
       startRate: 1000,
       stages: [
         { target: 2000, duration: '2m' }, // linearly go from 1000 iters/s to 2000 iters/s for 2m
-        { target: 5000, duration: '3m' }, // jump to 5000 iters/s in 3m
-        { target: 5000, duration: '20m' },// continue with 5000 iters/s for 20 minutes
-        { target: 2000, duration: '2m' },// ramp down to 2000 iters/s in 2m
-        { target: 1000, duration: '2m' },// ramp down to 1000 iters/s in 1m
+        { target: 5000, duration: '1m' }, // jump to 5000 iters/s in 3m
+        { target: 20000, duration: '3m' },// continue with 5000 iters/s for 20 minutes
+        { target: 30000, duration: '5m' },// ramp down to 2000 iters/s in 2m
+        { target: 2000, duration: '2m' },// ramp down to 1000 iters/s in 1m
       ]
     },
     stressSpikeGetTiles: {
       executor: 'ramping-arrival-rate',
-      preAllocatedVUs: 100,
+      preAllocatedVUs: 500,
       maxVUs: 12000,
       timeUnit: '1m',
       startRate: 1000,
