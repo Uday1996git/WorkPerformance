@@ -17,7 +17,7 @@ export class APIClient {
     }
 
     get() {
-        return http.get(this.url, this.options);
+        return http.request('GET', this.url.toString(), null, this.options);
     }
 
     put() {

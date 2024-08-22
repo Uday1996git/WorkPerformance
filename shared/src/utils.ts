@@ -10,5 +10,5 @@ export const getHeaders = (): object => {
 
     // contentType = contentType || 'application/json';
 
-    return { 'X-Auth-Token': X_AUTH_TOKEN, 'X-App-Token': X_APP_TOKEN, 'X-App-Version': X_APP_VERSION }
+    return { 'X-Auth-Token': X_AUTH_TOKEN, 'X-App-Token': X_APP_TOKEN, 'X-App-Version': X_APP_VERSION, 'Content-Type': 'application/json' }
 }
