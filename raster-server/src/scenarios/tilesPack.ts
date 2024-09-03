@@ -58,5 +58,18 @@ export const tilesPack: Options = {
         { target: 1000, duration: '2m' },// ramp down to 1000 iters/s in 1m
       ]
     },
+    spikeGetTiles: {
+      executor: 'ramping-arrival-rate',
+      preAllocatedVUs: 500,
+      maxVUs: 12000,
+      timeUnit: '1m',
+      startRate: 1000,
+      stages: [
+        { target: 10000, duration: '2m' }, // linearly go from 1000 iters/s to 2000 iters/s for 2m
+        { target: 20000, duration: '3m' }, // jump to 5000 iters/s in 3m
+        { target: 30000, duration: '5m' }, // jump to 30000 iters/s in 3m(spike simulation)
+        { target: 5000, duration: '2m' },// continue with 5000 iters/s for 15 minutes
+      ]
+    },
   },
 };
