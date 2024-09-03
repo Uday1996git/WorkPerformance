@@ -1,0 +1,47 @@
+{
+  "name": "mps",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "mps/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "tscbuild": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/mps",
+        "main": "mps/src/index.ts",
+        "tsConfig": "mps/tsconfig.lib.json",
+        "assets": ["mps/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "load-tests/nda/**/*.ts",
+          "load-tests/nda/package.json"
+        ]
+      }
+    },
+    "build": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "build-webpack"
+      }
+    },
+    "test": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "run-tests"
+      }
+    },
+    "testd": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "run-testsd"
+      }
+    }
+  }
+}
