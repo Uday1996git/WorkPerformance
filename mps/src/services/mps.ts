@@ -1,8 +1,8 @@
 import { APIClient } from 'shared';
 
 
-export class TilePack {
-    static getTiles(url: string, headers: object, params: { [key: string]: any }){//queryString: string) {
+export class MPSPlots {
+    static getMPS(url: string, headers: object, params: { [key: string]: any }){//queryString: string) {
         const queryString = `?${Object.keys(params).map(key => `${key}=${params[key]}`).join("&")}`;
         // url += `?${queryString}`;
         // const queryParamArray = Object.keys(params).map((key) => `${key}=${params[key]}`);
@@ -21,7 +21,7 @@ export class TilePack {
         return new APIClient({ baseUrl: url, options, queryString }).get();
     }
 
-    static postTiles(url: string, headers: object, body: any) {
+    static postMPS(url: string, headers: object, body: any) {
         const params = {
             headers,
             body

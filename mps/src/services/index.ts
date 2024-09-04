@@ -1,1 +1,1 @@
-export { TilePack } from './mps';
+export { MPSPlots } from './mps';

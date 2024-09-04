@@ -4,8 +4,8 @@ import { SharedArray } from 'k6/data';
 // @ts-ignore
 import papaparse from '../../../libs/papaparse.min.js';
 
-import { TilePack } from '../services/index.js';
-import { tilesPack } from '../scenarios/index.js';
+import { MPSPlots } from '../services/index.js';
+import { mpsPlots } from '../scenarios/index.js';
 import { generateRandomNumber, errorHandler, getHeaders } from 'shared';
 
 
@@ -20,22 +20,15 @@ const list = Object.fromEntries(
   scenariosList.map(key => {
     console.log('QWQW2', key);
 
-    if (!tilesPack.scenarios?.[key]) {
+    if (!mpsPlots.scenarios?.[key]) {
       throw new Error(`Scenario ${key} not found.`);
     }
-    return [key, tilesPack.scenarios?.[key]];
+    return [key, mpsPlots.scenarios?.[key]];
   }));
 console.log('QWQW3', list);
 
-
-// console.log('tilesPack.scenarios?.[SCENARIO_TAG]', SCENARIO_TAG);
-// TODO: for now go with single scenarios
-// Ideally create an util to provide merge option.
-
-// TODO: for now go with single scenarios
-// Ideally create an util to provide merge option.
 export const options: Options = {
-  ...tilesPack,
+  ...mpsPlots,
   scenarios: list
 }
 
@@ -44,13 +37,7 @@ console.log('***Final Options***', options);
 
 type URIObject = { URI: string }
 
-
-
-console.log('*************************************************************\n*** Test Data Loading Finished. Execution Starts Now ********\n*************************************************************');
-
 export default () => {
-
-  // Get random number between the 0 and test data length
   const payload = {
     "photos": [
         {
@@ -91,12 +78,12 @@ export default () => {
         }
     ]
   }
-  const res = TilePack.postTiles(`${BASE_URL}/api/1/photo/_create_from_urls?skip_dedupe=true`, getHeaders(), payload);
+  const res = MPSPlots.postMPS(`${BASE_URL}/api/1/photo/_create_from_urls?skip_dedupe=true`, getHeaders(), payload);
   console.log('response',res.body)
   // As we are using production data, some urls will not be found on dev envx`
   // As our intention is to simulate load, we are ignoring 404 requests.
   const checkStatus = check(res, {
-    'status is 200': () => res.status === 200 || res.status === 404,
+    'status is 200': () => res.status === 200 || res.status === 201,
   });
 
   // Log the failed checks
