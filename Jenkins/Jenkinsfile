@@ -8,5 +8,14 @@ properties([
 pipeline{
 
     agent any
+    stages{
+        stage('Example'){
+            steps{
+                script{
+                    echo "This is the Jenkins Script from MPS job"
+                }
+            }
+        }
+    }
 
 }
