@@ -9,7 +9,7 @@ pipeline{
     agent any
     stages{
         stage('Refresh Jenkins File'){
-            When{
+            when{
                 expression{
                     return params.Refresh == true
                 }
