@@ -1,5 +1,5 @@
+@Library('cloud-services-pipeline-shared-library') _
 properties([
-
     parameters([
         booleanParam(name: 'Refresh', defaultValue: false, description: 'Read Jenkinsfile and exit.'),
         separator(name: "Service", sectionHeader: "Choose a service to run Load on"),
