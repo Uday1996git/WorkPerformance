@@ -20,6 +20,12 @@ pipeline{
                 }
             }
         }
+
+        stage('Excute the tests'){
+            steps{
+                echo "Execute tests block is being executed"
+            }
+        }
     }
 
 }
