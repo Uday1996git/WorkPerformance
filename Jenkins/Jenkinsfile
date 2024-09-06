@@ -6,10 +6,14 @@ properties([
 ])
 
 pipeline{
-
     agent any
     stages{
-        stage('Example'){
+        stage('Refresh Jenkins File'){
+            When{
+                expression{
+                    return params.Refresh == true
+                }
+            }
             steps{
                 script{
                     echo "This is the Jenkins Script from MPS job"
