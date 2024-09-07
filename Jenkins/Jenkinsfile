@@ -6,7 +6,11 @@ properties([
 ])
 
 pipeline{
-    agent any
+    agent{
+        dockerfile{
+            filename 'Dockerfile'
+        }
+    }
     stages{
         stage('Refresh Jenkins File'){
             when{
