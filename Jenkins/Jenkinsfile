@@ -6,12 +6,12 @@ properties([
 ])
 
 pipeline{
-    agent any
-    // agent{
-    //     dockerfile{
-    //         filename 'Dockerfile'
-    //     }
-    // }
+    // agent any
+    agent{
+        dockerfile{
+            filename 'Dockerfile'
+        }
+    }
     environment {
         PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin/docker"
     }
