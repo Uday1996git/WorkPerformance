@@ -5,4 +5,4 @@ RUN apk add --no-cache wget
 RUN wget -q https://github.com/grafana/k6/releases/download/${K6_VERSION}/k6-v${K6_VERSION#v}-linux-amd64.tar.gz
 RUN tar -xzf k6-v${K6_VERSION#v}-linux-amd64.tar.gz
 RUN cp k6-v${K6_VERSION#v}-linux-amd64/k6 /app/k6
-
+WORKDIR /app

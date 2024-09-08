@@ -12,9 +12,9 @@ pipeline{
             filename 'Dockerfile'
         }
     }
-    environment {
-        PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin/docker"
-    }
+    // environment {
+    //     PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin/docker"
+    // }
     
     stages{
         stage('Check Docker Version'){
