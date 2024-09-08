@@ -1,0 +1,11 @@
+
+> nx run raster-server:test -e BASE_URL=https://neutron-raster-server-dev.geo.apple.com -e SCENARIO_TAG=spikeGetTiles -e X_AUTH_TOKEN=eyJhbGciOiJIUzI1NiJ9.Y3N0Zy5hNTljMGVhMC02NWM3LTExZWYtOWJhZi0wMzM5MmM3MmM4NGIuMTcyNDk1MjU2MjMxNA.eLtD8V6qJiHhkG1x9eO1XPNFKzCWgpzyeT_ZGFmA4Ms -e X_APP_TOKEN=plasma-silicon-web.05a04d31-e4c3-4564-a4b7-d4d629975967+swagger -e X_APP_VERSION=1 -e TEST_DATA_PATH=/Users/UDAY/Performance_Setup/raster-server/src/test-data/raster-tile-request-test-data.csv src/tests/getRasterTiles.ts
+
+> raster-server@0.0.1 run-tests
+> ./k6 run -e BASE_URL=https://neutron-raster-server-dev.geo.apple.com -e SCENARIO_TAG=spikeGetTiles -e X_AUTH_TOKEN=eyJhbGciOiJIUzI1NiJ9.Y3N0Zy5hNTljMGVhMC02NWM3LTExZWYtOWJhZi0wMzM5MmM3MmM4NGIuMTcyNDk1MjU2MjMxNA.eLtD8V6qJiHhkG1x9eO1XPNFKzCWgpzyeT_ZGFmA4Ms -e X_APP_TOKEN=plasma-silicon-web.05a04d31-e4c3-4564-a4b7-d4d629975967+swagger -e X_APP_VERSION=1 -e TEST_DATA_PATH=/Users/UDAY/Performance_Setup/raster-server/src/test-data/raster-tile-request-test-data.csv src/tests/getRasterTiles.ts
+          /\      |‾‾| /‾‾/   /‾‾/   
+     /\  /  \     |  |/  /   /  /    
+    /  \/    \    |     (   /   ‾‾\  
+   /          \   |  |\  \ |  (‾)  | 
+  / __________ \  |__| \__\ \_____/ .io
+time="2024-09-03T15:12:57+05:30" level=info msg="***Final Options*** {\"discardResponseBodies\":true,\"thresholds\":{\"http_req_failed\":[\"rate\\u003c0.3\"]},\"scenarios\":{\"spikeGetTiles\":{\"executor\":\"ramping-arrival-rate\",\"preAllocatedVUs\":500,\"maxVUs\":12000,\"timeUnit\":\"1m\",\"startRate\":1000,\"stages\":[{\"target\":10000,\"duration\":\"2m\"},{\"target\":20000,\"duration\":\"3m\"},{\"target\":30000,\"duration\":\"5m\"},{\"target\":5000,\"duration\":\"2m\"}]}}}" source=console
