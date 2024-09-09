@@ -6,10 +6,10 @@ properties([
 
 pipeline{
     // agent any
-    agent{
-        dockerfile{
-            filename 'Jenkins/Dockerfile'
-        }
+    agent{ dockerfile true
+        // dockerfile{
+        //     filename 'Jenkins/Dockerfile'
+        // }
     }
     // environment {
     //     PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin/docker"
