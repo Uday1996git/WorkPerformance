@@ -1,4 +1,3 @@
-
 properties([
     parameters([
         booleanParam(name: 'Refresh', defaultValue: false, description: 'Read Jenkinsfile and exit.'),
