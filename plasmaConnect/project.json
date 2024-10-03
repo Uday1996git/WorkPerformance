@@ -1,0 +1,47 @@
+{
+  "name": "plasmaConnect",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "plasmaConnect/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "tscbuild": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/plasmaConnect",
+        "main": "plasmaConnect/src/index.ts",
+        "tsConfig": "plasmaConnect/tsconfig.lib.json",
+        "assets": ["plasmaConnect/*.md"]
+      }
+    },
+	"lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "load-tests/plasmaConnect/**/*.ts",
+          "load-tests/plasmaConnect/package.json"
+        ]
+      }
+    },
+    "build": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "build-webpack"
+      }
+    },
+    "test": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "run-tests"
+      }
+    },
+    "testd": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "run-testsd"
+      }
+    }
+  }
+}

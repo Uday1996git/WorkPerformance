@@ -2,11 +2,12 @@
   "name": "raster-server",
   "version": "0.0.1",
   "scripts": {
-    "build-webpack":"webpack --config webpack.config.js",
-    "run-tests":"./k6 run",
-    "run-testsd":"K6_WEB_DASHBOARD=true ./k6 run"
+    "build-webpack": "webpack --config webpack.config.js",
+    "run-tests": "./k6 run",
+    "run-testsd": "K6_WEB_DASHBOARD=true ./k6 run"
   },
   "dependencies": {
+    "papaparse": "^5.4.1",
     "tslib": "^2.3.0"
   },
   "type": "commonjs",

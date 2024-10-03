@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "mps": ["mps/src/index.ts"],
+      "plasmaConnect": ["plasmaConnect/src/index.ts"],
       "raster-server": ["raster-server/src/index.ts"],
       "shared": ["shared/src/index.ts"]
     }
