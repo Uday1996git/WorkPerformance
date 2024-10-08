@@ -49,7 +49,13 @@ export default () => {
   const rasterPath = rasterRequestUrls[randomIndex];
 
   const res = TilePack.getTiles(`${BASE_URL}${rasterPath.URI}`, getHeaders());
-
+  console.log("Body is --->",res.body)
+  console.log("Status is ----->", res.status)
+  if(res.status === 503){
+    console.log("Error message is ---->", res.error)
+    console.log("Response headers are --->", res.headers)
+  }
+  
 
   // As we are using production data, some urls will not be found on dev env
   // As our intention is to simulate load, we are ignoring 404 requests.
