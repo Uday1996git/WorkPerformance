@@ -51,6 +51,7 @@ export default () => {
   const res = TilePack.getTiles(`${BASE_URL}${rasterPath.URI}`, getHeaders());
   console.log("Body is --->",res.body)
   console.log("Status is ----->", res.status)
+  console.log("res.headers--->", res.headers)
   if(res.status === 503){
     console.log("Error message is ---->", res.error)
     console.log("Response headers are --->", res.headers)
