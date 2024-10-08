@@ -10,6 +10,7 @@ export class APIClient {
         this.url = this.constructUrl(request);
         this.body = JSON.stringify(request.body || {});
         this.options = request.options || {};
+        console.log("Final url is --->",this.url)
     }
 
     post() {
