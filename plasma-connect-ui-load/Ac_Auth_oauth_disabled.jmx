@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan">
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+    </TestPlan>
+    <hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group">
+        <intProp name="ThreadGroup.num_threads">50</intProp>
+        <intProp name="ThreadGroup.ramp_time">5</intProp>
+        <longProp name="ThreadGroup.duration">300</longProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <com.googlecode.jmeter.plugins.webdriver.sampler.WebDriverSampler guiclass="com.googlecode.jmeter.plugins.webdriver.sampler.gui.WebDriverSamplerGui" testclass="com.googlecode.jmeter.plugins.webdriver.sampler.WebDriverSampler" testname="jp@gc - WebDriver Sampler">
+          <stringProp name="WebDriverSampler.script">import org.apache.commons.codec.binary.Base32
+import org.apache.commons.codec.binary.Hex
+import javax.crypto.Mac
+import javax.crypto.spec.SecretKeySpec
+//import org.openqa.selenium.Cookie
+//import java.util.Set
+import org.openqa.selenium.support.ui.WebDriverWait
+import org.openqa.selenium.support.ui.*
+
+public class TOTP {
+
+    private final static int[] DIGITS_POWER =
+        [ 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000 ]
+
+    private static byte[] hmac_sha(String crypto, byte[] keyBytes, byte[] text) {
+        Mac hmac = Mac.getInstance(crypto)
+        SecretKeySpec macKey = new SecretKeySpec(keyBytes, &quot;RAW&quot;)
+        hmac.init(macKey)
+        return hmac.doFinal(text)
+    }
+
+    private static byte[] hexStr2Bytes(String hex) {
+        byte[] bArray = new BigInteger(&quot;10&quot; + hex, 16).toByteArray()
+        byte[] ret = new byte[bArray.length - 1]
+        for (int i = 0; i &lt; ret.length; i++)
+            ret[i] = bArray[i + 1]
+        return ret
+    }
+
+    public static String generateTOTP(String key, String time, String returnDigits, String crypto) {
+        int codeDigits = Integer.decode(returnDigits).intValue()
+        String result = null
+
+        while (time.length() &lt; 16) {
+            time = &quot;0&quot; + time
+        }
+
+        byte[] msg = hexStr2Bytes(time)
+        byte[] k = hexStr2Bytes(key)
+
+        byte[] hash = hmac_sha(crypto, k, msg)
+
+        int offset = hash[hash.length - 1] &amp; 0xf
+
+        int binary =
+            ((hash[offset] &amp; 0x7f) &lt;&lt; 24) |
+            ((hash[offset + 1] &amp; 0xff) &lt;&lt; 16) |
+            ((hash[offset + 2] &amp; 0xff) &lt;&lt; 8) |
+            (hash[offset + 3] &amp; 0xff)
+
+        int otp = binary % DIGITS_POWER[codeDigits]
+
+        result = Integer.toString(otp)
+        while (result.length() &lt; codeDigits) {
+            result = &quot;0&quot; + result
+        }
+        return result
+    }
+
+    public static String base32ToHex(String base32) {
+        Base32 decoder = new Base32()
+        byte[] bytes = decoder.decode(base32)
+        return Hex.encodeHexString(bytes)
+    }
+    
+}
+WDS.sampleResult.sampleStart();
+WDS.browser.get(&quot;https://plasma-connect-staging.geo.apple.com/api/2/auth/ac_authenticate?app_token=training-center-ui.10bedd29-2e95-43a9-92fc-f6932f0ca425&amp;app_version=1.248.0-0.0&amp;env=staging&amp;app_env=staging&amp;ac_env=PROD&amp;redirect_to=aHR0cHM6Ly90cmFpbmluZy1jZW50ZXItdWktc3RhZ2luZy5nZW8uYXBwbGUuY29tLw%3D%3D&quot;);
+WebDriverWait wait = new WebDriverWait(WDS.browser, java.time.Duration.ofSeconds(120));
+wait.until(ExpectedConditions.visibilityOfElementLocated(org.openqa.selenium.By.xpath(&quot;//iframe[@id=&apos;aid-auth-widget-iFrame&apos;]&quot;)));
+WDS.browser.switchTo().frame(WDS.browser.findElement(org.openqa.selenium.By.xpath(&quot;//iframe[@id=&apos;aid-auth-widget-iFrame&apos;]&quot;)));
+wait.until(ExpectedConditions.visibilityOfElementLocated(org.openqa.selenium.By.xpath(&quot;//input[@id=&apos;account_name_text_field&apos;]&quot;)));
+WDS.browser.findElement(org.openqa.selenium.By.xpath(&quot;//input[@id=&apos;account_name_text_field&apos;]&quot;)).sendKeys(&quot;aws_plasmabot&quot;);
+wait.until(ExpectedConditions.elementToBeClickable(org.openqa.selenium.By.xpath(&quot;//button[@id=&apos;sign-in&apos;]&quot;)));
+WDS.browser.findElement(org.openqa.selenium.By.xpath(&quot;//button[@id=&apos;sign-in&apos;]&quot;)).click();
+wait.until(ExpectedConditions.visibilityOfElementLocated(org.openqa.selenium.By.xpath(&quot;//input[@id=&apos;password_text_field&apos;]&quot;)));
+WDS.browser.findElement(org.openqa.selenium.By.xpath(&quot;//input[@id=&apos;password_text_field&apos;]&quot;)).sendKeys(&quot;Awsbot@130824&quot;);
+wait.until(ExpectedConditions.elementToBeClickable(org.openqa.selenium.By.xpath(&quot;//button[@id=&apos;sign-in&apos;]&quot;)));
+WDS.browser.findElement(org.openqa.selenium.By.xpath(&quot;//button[@id=&apos;sign-in&apos;]&quot;)).click();
+wait.until(ExpectedConditions.visibilityOfElementLocated(org.openqa.selenium.By.xpath(&quot;//div[@class=&apos;si-device-name&apos;]&quot;)));
+WDS.browser.findElement(org.openqa.selenium.By.xpath(&quot;//div[@class=&apos;si-device-name&apos;]&quot;)).click();
+wait.until(ExpectedConditions.visibilityOfElementLocated(org.openqa.selenium.By.xpath(&quot;//input[@id=&apos;char0&apos;]&quot;)));
+String base32Secret = &quot;ntbrevh56mnifpxy&quot;;
+String totpSecret = TOTP.base32ToHex(base32Secret);
+long timeIndex = System.currentTimeMillis() / 1000 / 30;
+String time = String.format(&quot;%016X&quot;, timeIndex);
+String otp = TOTP.generateTOTP(totpSecret, time, &quot;6&quot;, &quot;HmacSHA1&quot;);
+WDS.browser.findElement(org.openqa.selenium.By.xpath(&quot;//input[@id=&apos;char0&apos;]&quot;)).sendKeys(otp);
+WDS.browser.switchTo().defaultContent();
+wait.until(ExpectedConditions.visibilityOfElementLocated(org.openqa.selenium.By.xpath(&quot;//button[text()=&apos;Log In with Apple Connect&apos;]&quot;)));
+//Set&lt;Cookie&gt; cookies = WDS.browser.manage().getCookies();
+//WDS.log(&quot;cookies are ---&gt; ${cookies}&quot;);
+WDS.sampleResult.sampleEnd();
+</stringProp>
+          <stringProp name="WebDriverSampler.parameters"></stringProp>
+          <stringProp name="WebDriverSampler.language">groovy</stringProp>
+        </com.googlecode.jmeter.plugins.webdriver.sampler.WebDriverSampler>
+        <hashTree>
+          <ResultCollector guiclass="GraphVisualizer" testclass="ResultCollector" testname="Graph Results">
+            <boolProp name="ResultCollector.error_logging">false</boolProp>
+            <objProp>
+              <name>saveConfig</name>
+              <value class="SampleSaveConfiguration">
+                <time>true</time>
+                <latency>true</latency>
+                <timestamp>true</timestamp>
+                <success>true</success>
+                <label>true</label>
+                <code>true</code>
+                <message>true</message>
+                <threadName>true</threadName>
+                <dataType>true</dataType>
+                <encoding>false</encoding>
+                <assertions>true</assertions>
+                <subresults>true</subresults>
+                <responseData>false</responseData>
+                <samplerData>false</samplerData>
+                <xml>false</xml>
+                <fieldNames>true</fieldNames>
+                <responseHeaders>false</responseHeaders>
+                <requestHeaders>false</requestHeaders>
+                <responseDataOnError>false</responseDataOnError>
+                <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                <assertionsResultsToSave>0</assertionsResultsToSave>
+                <bytes>true</bytes>
+                <sentBytes>true</sentBytes>
+                <url>true</url>
+                <threadCounts>true</threadCounts>
+                <idleTime>true</idleTime>
+                <connectTime>true</connectTime>
+              </value>
+            </objProp>
+            <stringProp name="filename"></stringProp>
+          </ResultCollector>
+          <hashTree/>
+        </hashTree>
+        <com.googlecode.jmeter.plugins.webdriver.config.ChromeDriverConfig guiclass="com.googlecode.jmeter.plugins.webdriver.config.gui.ChromeDriverConfigGui" testclass="com.googlecode.jmeter.plugins.webdriver.config.ChromeDriverConfig" testname="jp@gc - Chrome Driver Config">
+          <boolProp name="WebDriverConfig.acceptinsecurecerts">false</boolProp>
+          <boolProp name="WebDriverConfig.reset_per_iteration">true</boolProp>
+          <stringProp name="WebDriverConfig.driver_path">Downloads/chromedriver-mac-arm64/chromedriver</stringProp>
+          <boolProp name="WebDriverConfig.dev_mode">false</boolProp>
+          <boolProp name="WebDriverConfig.headless">true</boolProp>
+          <boolProp name="WebDriverConfig.maximize_browser">false</boolProp>
+          <stringProp name="ChromeDriverConfig.additional_args">executablePath: ../../chromedriver-mac-arm64/chromedriver, user-data-dir: /Users/UDAY/Library/Application Support/Google/Chrome/Profile 42</stringProp>
+          <stringProp name="ChromeDriverConfig.binary_path"></stringProp>
+          <stringProp name="WebDriverConfig.proxy_type">DIRECT</stringProp>
+          <stringProp name="WebDriverConfig.proxy_pac_url"></stringProp>
+          <stringProp name="WebDriverConfig.http_host"></stringProp>
+          <intProp name="WebDriverConfig.http_port">8080</intProp>
+          <boolProp name="WebDriverConfig.use_http_for_all_protocols">true</boolProp>
+          <stringProp name="WebDriverConfig.https_host"></stringProp>
+          <intProp name="WebDriverConfig.https_port">8080</intProp>
+          <boolProp name="WebDriverConfig.use_ftp_proxy">true</boolProp>
+          <stringProp name="WebDriverConfig.ftp_host"></stringProp>
+          <intProp name="WebDriverConfig.ftp_port">8080</intProp>
+          <boolProp name="WebDriverConfig.use_socks_proxy">true</boolProp>
+          <stringProp name="WebDriverConfig.socks_host"></stringProp>
+          <intProp name="WebDriverConfig.socks_port">8080</intProp>
+          <stringProp name="WebDriverConfig.no_proxy">localhost</stringProp>
+          <stringProp name="WebDriverConfig.custom_capabilites"></stringProp>
+        </com.googlecode.jmeter.plugins.webdriver.config.ChromeDriverConfig>
+        <hashTree/>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <url>true</url>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+        <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Aggregate Report">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <url>true</url>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename">/Users/UDAY/Downloads/ac_oauth_disabled - Sheet1.csv</stringProp>
+        </ResultCollector>
+        <hashTree/>
+        <ResultCollector guiclass="GraphVisualizer" testclass="ResultCollector" testname="Graph Results">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <url>true</url>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+      </hashTree>
+      <ResultCollector guiclass="GraphVisualizer" testclass="ResultCollector" testname="Graph Results">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
