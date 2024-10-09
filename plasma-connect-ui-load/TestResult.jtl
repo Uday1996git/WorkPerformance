@@ -1,0 +1,2 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1728500551398,22628,jp@gc - WebDriver Sampler,200,OK,Thread Group 1-1,text,true,,7480,0,1,1,https://training-center-ui-staging.geo.apple.com/,0,0,0
